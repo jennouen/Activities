@@ -1,0 +1,103 @@
+using System;
+using System.Runtime.InteropServices;
+
+namespace PersonalInformation
+{
+    class Personal
+    {
+        static string name, input;
+        static int age;
+        static double height, doubleAge;
+        static bool success;
+        const int LEGAL_DRINKING_AGE = 21;
+
+        public static void PersonalDetails()
+        {
+            Console.WriteLine("Welcome to Your Personal Information System");
+
+            Console.WriteLine("\nPlease enter your name:\t");
+            name = Console.ReadLine();
+
+            GetAge(); //call method for getting age
+            GetHeight(); //call method for getting height
+
+        }
+
+        public static void GetAge()
+        {
+            Console.WriteLine("\nPlease enter your age:\t");
+            input = Console.ReadLine(); //store the user input value to a string data type
+
+            success = int.TryParse(input, out age); //convert string input to interger
+            if (!(success && age >= 0)) //validation of not accepting input in not postive number
+            {
+                Console.WriteLine("Age should be a Positive Whole Number"); //prompt user 
+                GetAge(); //call method
+            }
+
+            doubleAge = Convert.ToDouble(age); //converting int to double
+
+        }
+
+        public static void GetHeight() //method for getting height
+        {
+            Console.WriteLine("\nPlease enter your height in meters:\t");
+            input = Console.ReadLine();//store the user input value to a string data type
+
+            success = double.TryParse(input, out height); //covert string input to double
+            if (!(success && height >= 0)) //validation of not accepting input in not postive number
+            {
+                Console.WriteLine("Height should be a Positive Number"); //prompt user
+                GetHeight(); //call method
+            }
+        }
+
+
+        public static void DisplayPersonalInfo() //method that will display all the user input
+            {
+  
+            Console.WriteLine("\n--------------------------------\t");
+            Console.WriteLine("Your Personal Details:");
+            Console.WriteLine($"Name: {name}");
+            Console.WriteLine($"Age: {doubleAge}");
+            Console.WriteLine($"Height: {height} in meters");
+
+            string personalInfo = $"{name}, {doubleAge} years old, {height} meter tall."; //assign string for personal information of the user
+
+            Console.WriteLine("\nAge Check:\t");
+                if (age  >= 18) //validation for age
+                {
+                Console.WriteLine($"Welcome {name}! You're an adult now.");
+                }
+                else
+                {
+                Console.WriteLine("You are still a minor");
+                }
+
+                Console.WriteLine("\nLegal Drinking Age Verification:\t");
+                if (age >= LEGAL_DRINKING_AGE) //validation of legal age for drinking alcoholic drink
+                {
+                Console.WriteLine($"Cheers, {name}! You're legally allowed to enjoy alcoholic beverages.");
+                }
+                else
+                {
+                Console.WriteLine("Sorry, you are underage for drinking.");
+                }
+
+                Console.WriteLine("\nPersonal Details Presentation:\t");
+                Console.WriteLine($"Your Personal Information: {personalInfo}"); //display user personal information
+
+                Console.WriteLine("\n--------------------------------\t");
+
+                Console.WriteLine("Thank you for using Personal Information System");
+
+        }
+        static void Main(string[] args) 
+            {
+         
+                PersonalDetails(); //call method to get Personal Details from user
+                DisplayPersonalInfo(); //call method to display Personal Info
+
+            }
+    }
+}
