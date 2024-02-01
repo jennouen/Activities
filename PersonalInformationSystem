@@ -11,18 +11,29 @@ namespace PersonalInformation
         static bool success;
         const int LEGAL_DRINKING_AGE = 21;
 
+        
         public static void PersonalDetails()
         {
             Console.WriteLine("Welcome to Your Personal Information System");
 
-            Console.WriteLine("\nPlease enter your name:\t");
-            name = Console.ReadLine();
-
-            GetAge(); //call method for getting age
-            GetHeight(); //call method for getting height
+                GetName();//call method for getting name
+                GetAge(); //call method for getting age
+                GetHeight(); //call method for getting height
 
         }
 
+        public static void GetName()
+        {
+            Console.WriteLine("\nPlease enter your name:\t");
+            name = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                Console.WriteLine("Please input valid name, shouldn't be empty or have special character.");
+                GetName();
+            }
+        }
+        
         public static void GetAge()
         {
             Console.WriteLine("\nPlease enter your age:\t");
@@ -51,7 +62,6 @@ namespace PersonalInformation
                 GetHeight(); //call method
             }
         }
-
 
         public static void DisplayPersonalInfo() //method that will display all the user input
             {
