@@ -9,7 +9,7 @@ namespace PersonalInformation
         static int age;
         static double height, doubleAge;
         static bool success;
-        const int LEGAL_DRINKING_AGE = 21;
+        const int LEGAL_DRINKING_AGE = 21;//constant declaration
 
         
         public static void PersonalDetails()
@@ -29,7 +29,7 @@ namespace PersonalInformation
 
             if (string.IsNullOrWhiteSpace(name))
             {
-                Console.WriteLine("Please input valid name, shouldn't be empty or have special character.");
+                Console.WriteLine("Please input valid name, shouldn't be empty.");
                 GetName();
             }
         }
