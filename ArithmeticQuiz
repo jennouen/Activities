@@ -1,0 +1,82 @@
+using System;
+
+namespace ArithmeticQuiz
+{
+    class Program
+    {
+
+        public static void Main(string[] args)
+        {
+            Console.WriteLine("Welcome to the Arithmetic Quiz!");
+
+            Random random = new Random();
+
+            double playerAnswer; //this will store player answer
+            int score = 0; //this will store player score
+            int numofQuestion = random.Next(1, 15); //this will pick how many number of question
+
+            for (int i = 1; i <= numofQuestion; i++) //this will be loop for giving arithmetic question
+            {
+
+                Random randomQuiz = new Random();
+
+                int num1 = randomQuiz.Next(1, 10); //this will pick random number for the question to solve
+                int num2 = randomQuiz.Next(1, 10); //this will pick random number for the question to solve
+                int operationQuiz = randomQuiz.Next(1, 4); //this will pick random operation in the question
+
+                double answer = 0; //this store the right answer in every question
+                string operation = ""; //this stores random operation
+
+
+                if (operationQuiz == 1)
+                {
+                    answer = num1 + num2;
+                    operation = "+";
+                }
+
+                else if (operationQuiz == 2)
+                {
+                    answer = num1 - num2;
+                    operation = "-";
+                }
+
+                else if (operationQuiz == 3)
+                {
+                    answer = num1 * num2;
+                    operation = "*";
+                }
+                else if (operationQuiz == 4)
+                {
+                    answer = (double) num1 / num2;
+                    operation = "/";
+                }
+
+
+                Console.WriteLine($"\nQuestion {i}:What is {num1} {operation} {num2}?"); //this will display for arithmetic question
+
+                while (!double.TryParse(Console.ReadLine(), out playerAnswer)) //this will validate if the player inputted non numeric 
+                {
+                    Console.WriteLine("Please enter a valid integer."); //this is the prompt message when player will input non numeric
+                    Console.Write("Your answer: "); //will ask the player to input valid answer
+                }
+                if (playerAnswer == answer) //this will compare the right answer to the players answer
+                {
+                    Console.WriteLine($"\n{playerAnswer} is correct!"); //this will display if the player answer is correct
+                    score++; //will add to the score
+                }
+                else
+                {
+                    Console.WriteLine($"\nIncorrect! The correct answer is {answer}"); //this will display if the player answer is incorrect
+                }
+
+            }
+
+            int percent = (int)((double)score / numofQuestion * 100); //this will compute how many percentage did the player answer correctly
+
+            Console.WriteLine($"\nQuiz completed! Your score: {score} out of {numofQuestion}\t"); //this will display what is the total score and number of question
+            Console.WriteLine($"\nPercentage of Correct Answers: {percent}%\t"); //this will display the percentage of correct answers of the player
+            Console.WriteLine("Press any key to exit.");
+            Console.ReadKey();
+        }
+    }
+}
