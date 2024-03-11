@@ -1,0 +1,91 @@
+using System;
+using System.Reflection.Metadata.Ecma335;
+using System.Security.Cryptography.X509Certificates;
+
+namespace SimpleCalculator
+{
+    class SimpleCalculator
+    {
+       static void Main(string[] args)
+        {
+            int firstNum;
+            int secondNum;
+            string input;
+            int operation;
+            bool success;
+
+            Console.WriteLine("---------------------");
+            Console.WriteLine("*Simple Calculator*");
+            Console.WriteLine("---------------------");
+
+            Console.WriteLine("Enter First Number:   ");
+            input = Console.ReadLine();
+           
+            success = int.TryParse(input, out firstNum);//validation if firstnumber is a valid input
+            if (success)
+            {
+                Console.WriteLine("Enter Second Number:   ");
+                
+            }
+            else
+            {
+                Console.WriteLine("Invalid Input.Please try again");//prompt user for inputting invalid input
+            }
+
+            input = Console.ReadLine();
+            success = int.TryParse(input, out secondNum);//validation if secondnumber is a valid input
+            if (success)
+            {
+                Console.WriteLine("Choose an operation:");//list of operation to choice
+                Console.WriteLine("1.Addition");
+                Console.WriteLine("2.Subtraction");
+                Console.WriteLine("3.Multiplicaiton");
+                Console.WriteLine("4.Division");
+
+                Console.WriteLine("Enter the operation number(1-4):");//users input
+                operation = Convert.ToInt32(Console.ReadLine());
+
+                if (operation == 1)
+                {
+                    Console.WriteLine($"Result of Addition: {firstNum + secondNum}");
+                }
+
+                else if (operation == 2)
+                {
+                    Console.WriteLine($"Result of Subtration: {firstNum - secondNum}");
+                }
+
+                else if (operation == 3)
+                {
+                    Console.WriteLine($"Result of Multipication: {firstNum * secondNum}");
+                }
+
+                else if (operation == 4)
+                {
+                    if (secondNum > 0)
+                    {
+                        Console.WriteLine($"Result of Division: {firstNum / secondNum}");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Second Number must be greater than Zero(0)");//prompt user secondnumber should not be equal to zero
+                    }
+
+                }
+                else
+                {
+                    Console.WriteLine("Invalid Input of arithmetic operation");//prompt user for inputting invalid input of operation
+                }
+
+            }
+            else
+            {
+                Console.WriteLine("Invalid Input.Please try again");
+            }
+
+           
+        }
+     
+    }
+
+}
