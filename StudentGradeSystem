@@ -1,1 +1,158 @@
+using System;
 
+namespace StudentGradingSystem
+{
+    class Student
+    {
+        private static string input, answer, name;
+        private static int totalStudent;
+        private static bool success;
+        private static string[] studentData; //Array to store student names
+        private static int[] grade = new int[3]; //storing 3 subjects grade
+
+        public static string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
+
+        public int[] Grades
+        {
+            get { return grade; }
+            set { grade = value; }
+        }
+
+        public static void GetTotal()
+        {
+            Console.WriteLine("Enter total student:");
+            input = Console.ReadLine();
+
+            success = int.TryParse(input, out totalStudent);
+            if (success)
+            {
+                ShowMenu();
+            }
+
+            else
+            {
+                Console.WriteLine("Invalid input. Please try again");
+                GetTotal();
+            }
+
+        }
+
+        public static void ShowMenu()
+        {
+
+            int choice;
+
+            Console.WriteLine("Welcome to the Student Grading System!");
+            Console.WriteLine("[1]Enroll Students");
+            Console.WriteLine("[2]Enter Student Grades");
+            Console.WriteLine("[3]Show Student Grades");
+            Console.WriteLine("[4]Show Top Student");
+            Console.WriteLine("[5]Exit");
+            Console.WriteLine("\nEnter Choice:\t");
+            choice = Convert.ToInt32(Console.ReadLine());
+
+            if (choice == 1)
+            {
+                studentData = new string[totalStudent]; //Initialize the array with the total student
+                EnrollStudent();
+            }
+            else if (choice == 2)
+            {
+                StudentGrade();
+            }
+            else if (choice == 3)
+            {
+                ShowGrade();
+            }
+            else if (choice == 4)
+            {
+                TopStudent();
+            }
+            else if (choice == 5)
+            {
+                //break;
+            }
+            else
+            {
+                Console.WriteLine("Please enter valid input");
+            }
+
+
+        }
+
+        public static void EnrollStudent()
+        {
+            for (int i = 0; i < totalStudent; i++)
+            {
+
+                Console.WriteLine("Enrolling Student" + (i + 1));
+
+                Console.WriteLine("Enter student name:");
+                name = Console.ReadLine();
+
+                    if (string.IsNullOrWhiteSpace(name))
+                    {
+                        Console.WriteLine("Please input a valid name, it shouldn't be empty.");
+                        i--;
+                    }
+
+                    else
+                    {
+                        studentData[i] = Name;
+
+                        Console.WriteLine("Enter Again [Y/N]:");
+                        answer = Console.ReadLine();
+
+                        if (answer.ToUpper() == "Y")
+                        {
+                            continue;
+                        }
+                        else if (answer.ToUpper() == "N")
+                        {
+                            ShowMenu();
+                            return;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Please enter Y/N only!");
+                            i--;
+                        }
+                    }
+                
+            }
+
+        }
+
+        static void StudentGrade()
+        {
+            for (int i = 0; i < totalStudent; i++)
+            {
+
+                Console.WriteLine($"\nStudent Name: {studentData[i]}");
+                Console.WriteLine("Grades:");
+
+            }
+
+
+        }
+
+        public static void ShowGrade()
+        {
+
+        }
+
+        public static void TopStudent()
+        {
+
+        }
+
+        static void Main(string[] args)
+        {
+            GetTotal();
+        }
+    }
+}
