@@ -1,1 +1,142 @@
+using System;
+using System.Collections.Generic;
 
+// Enum representing different departments
+enum Department
+{
+    IT,
+    HR,
+    Finance
+}
+
+// Base class Person with FirstName and LastName properties
+class Person
+{
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+}
+
+// Employee class derived from Person
+class Employee : Person
+{
+    public int EmployeeId { get; private set; }
+    public double Salary { get; set; }
+    public Department Department { get; set; }
+    private static int totalEmployees = 0;
+
+    // Static member to keep track of total number of employees created
+    public static int TotalEmployees
+    {
+        get { return totalEmployees; }
+    }
+
+    // Parameterized constructor to initialize properties
+    public Employee(int employeeId, string firstName, string lastName, double salary, Department department)
+    {
+        EmployeeId = employeeId;
+        FirstName = firstName;
+        LastName = lastName;
+        Salary = salary;
+        Department = department;
+        totalEmployees++;
+    }
+
+    // Destructor
+    ~Employee()
+    {
+        Console.WriteLine($"Employee {EmployeeId} {FirstName} {LastName} is destroyed.");
+    }
+}
+
+// Interface for manager
+interface IManager
+{
+    void AssignEmployeeToDepartment(Employee employee, Department department);
+}
+
+// EmployeeManager class managing a list of employees
+class EmployeeManager : IManager
+{
+    private List<Employee> employees = new List<Employee>();
+
+    // Method to add an employee to the list
+    public void AddEmployee(Employee employee)
+    {
+        employees.Add(employee);
+    }
+
+    // Method to remove an employee based on employee ID
+    public void RemoveEmployee(int employeeId)
+    {
+        Employee employeeToRemove = employees.Find(emp => emp.EmployeeId == employeeId);
+        if (employeeToRemove != null)
+        {
+            employees.Remove(employeeToRemove);
+            Console.WriteLine($"Employee {employeeId} removed successfully.");
+        }
+        else
+        {
+            Console.WriteLine($"Employee with ID {employeeId} not found.");
+        }
+    }
+
+    // Method to display details of all employees
+    public void DisplayAllEmployees()
+    {
+        Console.WriteLine("\nEmployee Details:");
+        foreach (var employee in employees)
+        {
+            Console.WriteLine($"Employee ID: {employee.EmployeeId}, Name: {employee.FirstName} {employee.LastName}, Salary: {employee.Salary}, Department: {employee.Department}");
+        }
+    }
+
+    // Method to calculate and display total salary of all employees
+    public void DisplayTotalSalary()
+    {
+        double totalSalary = 0;
+        foreach (var employee in employees)
+        {
+            totalSalary += employee.Salary;
+        }
+        Console.WriteLine($"Total Salary of all employees: {totalSalary}");
+    }
+
+    // Interface method implementation to assign employee to department
+    public void AssignEmployeeToDepartment(Employee employee, Department department)
+    {
+        employee.Department = department;
+        Console.WriteLine($"Employee {employee.FirstName} {employee.LastName} assigned to {department} department.");
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Creating instances of EmployeeManager and adding employees
+        EmployeeManager employeeManager = new EmployeeManager();
+
+        Employee emp1 = new Employee(1, "John", "Doe", 50000, Department.IT);
+        Employee emp2 = new Employee(2, "Jane", "Smith", 60000, Department.HR);
+        Employee emp3 = new Employee(3, "Tom", "Jones", 70000, Department.Finance);
+
+        employeeManager.AddEmployee(emp1);
+        employeeManager.AddEmployee(emp2);
+        employeeManager.AddEmployee(emp3);
+
+        // Displaying all employees
+        employeeManager.DisplayAllEmployees();
+
+        // Removing an employee
+        employeeManager.RemoveEmployee(2);
+
+        // Displaying all employees after removal
+        employeeManager.DisplayAllEmployees();
+
+        // Displaying total salary
+        employeeManager.DisplayTotalSalary();
+
+        // Assigning employee to a department
+        employeeManager.AssignEmployeeToDepartment(emp1, Department.IT);
+    }
+}
