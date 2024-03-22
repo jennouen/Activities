@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.Design;
 
 namespace StudentGradingSystem
 {
@@ -8,19 +9,8 @@ namespace StudentGradingSystem
         private static int totalStudent;
         private static bool success;
         private static string[] studentData; //Array to store student names
-        private static int[] grade = new int[3]; //storing 3 subjects grade
-
-        public static string Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
-
-        public int[] Grades
-        {
-            get { return grade; }
-            set { grade = value; }
-        }
+        private static int[][] grade; //storing 3 subjects grade
+        private static string[] subjects = { "Science", "Math", "English" };
 
         public static void GetTotal()
         {
@@ -46,13 +36,13 @@ namespace StudentGradingSystem
 
             int choice;
 
-            Console.WriteLine("Welcome to the Student Grading System!");
+            Console.WriteLine("\nWelcome to the Student Grading System!\t");
             Console.WriteLine("[1]Enroll Students");
             Console.WriteLine("[2]Enter Student Grades");
             Console.WriteLine("[3]Show Student Grades");
             Console.WriteLine("[4]Show Top Student");
             Console.WriteLine("[5]Exit");
-            Console.WriteLine("\nEnter Choice:\t");
+            Console.WriteLine("\nEnter Choice: \t");
             choice = Convert.ToInt32(Console.ReadLine());
 
             if (choice == 1)
@@ -62,6 +52,7 @@ namespace StudentGradingSystem
             }
             else if (choice == 2)
             {
+                grade = new int[totalStudent][]; //Initialize the array for grades
                 StudentGrade();
             }
             else if (choice == 3)
@@ -74,7 +65,7 @@ namespace StudentGradingSystem
             }
             else if (choice == 5)
             {
-                //break;
+                Console.Write("You are now existing the application. Bye!");
             }
             else
             {
@@ -89,64 +80,172 @@ namespace StudentGradingSystem
             for (int i = 0; i < totalStudent; i++)
             {
 
-                Console.WriteLine("Enrolling Student" + (i + 1));
+                Console.WriteLine("\nEnrolling Student" + (i + 1));
 
-                Console.WriteLine("Enter student name:");
+                Console.WriteLine("\nEnter student name: \t");
                 name = Console.ReadLine();
 
-                    if (string.IsNullOrWhiteSpace(name))
-                    {
-                        Console.WriteLine("Please input a valid name, it shouldn't be empty.");
-                        i--;
-                    }
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    Console.WriteLine("Please input a valid name, it shouldn't be empty.");
+                    i--;
+                }
+                else if (Array.Exists(studentData, element => element == name)) //this will check if the name inputted already exist
+                {
+                    Console.WriteLine($"Student {name} is already enrolled. Please enter other student name.");
+                    i--;
+                }
 
-                    else
-                    {
-                        studentData[i] = Name;
+                else
+                {
+                    studentData[i] = name;
 
-                        Console.WriteLine("Enter Again [Y/N]:");
+                        Console.WriteLine("\nEnter Again [Y/N]: \t");
                         answer = Console.ReadLine();
 
-                        if (answer.ToUpper() == "Y")
-                        {
-                            continue;
-                        }
-                        else if (answer.ToUpper() == "N")
+                        if (answer.ToUpper() != "Y")
                         {
                             ShowMenu();
                             return;
                         }
+
                         else
                         {
-                            Console.WriteLine("Please enter Y/N only!");
-                            i--;
+                            continue;
                         }
-                    }
-                
+                }
+
             }
 
         }
 
-        static void StudentGrade()
+        public static void StudentGrade()
         {
-            for (int i = 0; i < totalStudent; i++)
+            if (studentData == null || studentData.Length == 0)
             {
-
-                Console.WriteLine($"\nStudent Name: {studentData[i]}");
-                Console.WriteLine("Grades:");
-
+                Console.WriteLine("\nNo students enrolled. Please enroll students first.\t");
+                ShowMenu() ;
+                return;
             }
 
+            else
+            {
+                int studGrade;
+                for (int i = 0; i < totalStudent; i++)
+                {
+                    grade[i] = new int[3]; //create a new array for the grade of each subject
+                    Console.WriteLine($"\nStudent Name: {studentData[i]}\t");
+
+                    for (int j = 0; j < 3; j++)
+                    {
+                        Console.WriteLine($"\n{subjects[j]} Grade:\t");
+                        string gradeInput = Console.ReadLine();
+
+                        // Attempt to convert input to integer
+                        try
+                        {
+                            studGrade = Convert.ToInt32(gradeInput);
+
+                        }
+                        catch (FormatException)
+                        {
+                            Console.WriteLine("Invalid input. Please enter a numeric grade.");
+                            j--; // Prompt user to enter the same grade again
+                            continue;
+                        }
+
+                        // Store the grade if it's valid
+                        grade[i][j] = studGrade;
+                    }
+
+                    Console.WriteLine("Enter grades for another student [Y/N]:");
+                    answer = Console.ReadLine();
+
+                    if (answer.ToUpper() == "Y")
+                    {
+                        continue;
+                    }
+                    else if (answer.ToUpper() == "N")
+                    {
+                        ShowMenu();
+                        return;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Please enter Y/N only!");
+                    }
+
+                }
+            }
 
         }
 
         public static void ShowGrade()
         {
+            if (studentData == null || studentData.Length == 0)
+            {
+                Console.WriteLine("\nNo students enrolled. Please enroll students first.\t");
+                ShowMenu();
+                return;
+            }
+            else if (grade == null || grade.Length == 0)
+            {
+                Console.WriteLine("\nNo students grade enrolled. Please input students grade first.\t");
+                ShowMenu();
+                return;
+            }
+
+            else 
+            {
+                Console.WriteLine("{0,-15}{1,-15}{2,-15}{3,-15}{4,-15}", "Name", "Science", "Math", "English", "Ave.");
+                for (int i = 0; i < totalStudent; i++)
+                {
+                    int totalAverage = 0;
+                    Console.Write("{0,-15}", studentData[i]);
+                    for (int j = 0; j < 3; j++)
+                    {
+                        Console.Write("{0,-15}", grade[i][j]);
+                        totalAverage += grade[i][j];
+                    }
+                    double averageGrade = totalAverage/3.0; //calculate average grade
+                    Console.WriteLine("{0,-15}", averageGrade);
+                } 
+                ShowMenu();
+            }
 
         }
 
         public static void TopStudent()
         {
+            if (studentData == null || studentData.Length == 0)
+            {
+                Console.WriteLine("\nNo students enrolled. Please enroll students first.\t");
+                ShowMenu();
+                return;
+            }
+
+            else
+            {
+                int maxTotal = int.MinValue;
+                string topStudent = "";
+
+                for (int i = 0;i < studentData.Length;i++)
+                {
+                    int studMark = 0;
+                    for (int j = 0;j<3;j++)
+                    {
+                        studMark += grade[i][j];
+                    }
+
+                    if ( studMark > maxTotal )
+                    {
+                        maxTotal = studMark;
+                        topStudent = studentData[i];
+                    }
+                }
+
+                Console.WriteLine($"\nTop Student: {topStudent}");
+            }
 
         }
 
